@@ -34,14 +34,19 @@ Make sure you have **Node.js** and **npm** installed.
 ```bash
 git clone git@github.com:PanktiTheChariot/Shopzio.git
 cd Shopzio
-
+```
 ## 🖼️ Preview
 
+
 ### 🏠 Homepage
-![Homepage Screenshot](/assets/home.png)
+<img width="1512" alt="home" src="https://github.com/user-attachments/assets/b4c46217-d75c-4257-8c48-02e29d6f22e5" />
+
 
 ### 📦 Product Listing
-![Product Page Screenshot](/assets/product.png)
+<img width="1512" alt="products" src="https://github.com/user-attachments/assets/d48437a9-052b-4fb4-ba5e-310b5dbd4e60" />
+
 
 ### 🛒 Cart Page
-![Cart Screenshot](/assets/cart.png)
+<img width="1512" alt="cart" src="https://github.com/user-attachments/assets/8ad8aeff-9b6d-4100-afd9-b3687936f7c4" />
+
+
