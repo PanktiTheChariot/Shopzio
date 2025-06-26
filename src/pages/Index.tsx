@@ -1,171 +1,197 @@
 
-import { useState, useMemo } from "react";
+import { Link } from "react-router-dom";
 import Navigation from "../components/Navigation";
-import ProductCard from "../components/ProductCard";
-import Sidebar from "../components/Sidebar";
-import Pagination from "../components/Pagination";
-import { products } from "../data/products";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Filter } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-
-const PRODUCTS_PER_PAGE = 10;
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { ShoppingBag, Truck, Shield, Headphones, Star, ArrowRight } from "lucide-react";
+import { products } from "../data/products";
+import ProductCard from "../components/ProductCard";
 
 const Index = () => {
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-  const [priceRange, setPriceRange] = useState<number[]>([0, 500]);
-  const [sortBy, setSortBy] = useState<string>("name");
-  const [currentPage, setCurrentPage] = useState(1);
-
-  const categories = Array.from(new Set(products.map(product => product.category)));
-
-  const handleCategoryChange = (category: string) => {
-    setSelectedCategories(prev => 
-      prev.includes(category) 
-        ? prev.filter(c => c !== category)
-        : [...prev, category]
-    );
-    setCurrentPage(1);
-  };
-
-  const handlePriceRangeChange = (range: number[]) => {
-    setPriceRange(range);
-    setCurrentPage(1);
-  };
-
-  const handleSortChange = (value: string) => {
-    setSortBy(value);
-    setCurrentPage(1);
-  };
-
-  const filteredAndSortedProducts = useMemo(() => {
-    let filtered = products.filter(product => {
-      const categoryMatch = selectedCategories.length === 0 || selectedCategories.includes(product.category);
-      const priceMatch = product.price >= priceRange[0] && product.price <= priceRange[1];
-      return categoryMatch && priceMatch;
-    });
-
-    switch (sortBy) {
-      case "price-low":
-        filtered.sort((a, b) => a.price - b.price);
-        break;
-      case "price-high":
-        filtered.sort((a, b) => b.price - a.price);
-        break;
-      case "rating":
-        filtered.sort((a, b) => b.rating - a.rating);
-        break;
-      case "name":
-      default:
-        filtered.sort((a, b) => a.name.localeCompare(b.name));
-        break;
-    }
-
-    return filtered;
-  }, [selectedCategories, priceRange, sortBy]);
-
-  const totalPages = Math.ceil(filteredAndSortedProducts.length / PRODUCTS_PER_PAGE);
-  const startIndex = (currentPage - 1) * PRODUCTS_PER_PAGE;
-  const paginatedProducts = filteredAndSortedProducts.slice(startIndex, startIndex + PRODUCTS_PER_PAGE);
+  // Get featured products (first 4 products)
+  const featuredProducts = products.slice(0, 4);
 
   return (
     <div className="min-h-screen bg-slate-50">
       <Navigation />
       
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Header Section */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-slate-800 mb-2">Discover Amazing Products</h1>
-          <p className="text-slate-600">Find the perfect items for your lifestyle</p>
-        </div>
-
-        <div className="flex flex-col lg:flex-row gap-8">
-          {/* Desktop Sidebar */}
-          <div className="hidden lg:block w-80 flex-shrink-0">
-            <Sidebar
-              selectedCategories={selectedCategories}
-              onCategoryChange={handleCategoryChange}
-              priceRange={priceRange}
-              onPriceRangeChange={handlePriceRangeChange}
-              categories={categories}
-            />
-          </div>
-
-          {/* Main Content */}
-          <div className="flex-1">
-            {/* Controls */}
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-              <div className="flex items-center gap-4">
-                {/* Mobile Filter Button */}
-                <Sheet>
-                  <SheetTrigger asChild>
-                    <Button variant="outline" className="lg:hidden border-slate-300">
-                      <Filter className="h-4 w-4 mr-2" />
-                      Filters
-                    </Button>
-                  </SheetTrigger>
-                  <SheetContent side="left" className="w-80">
-                    <SheetHeader>
-                      <SheetTitle>Filters</SheetTitle>
-                    </SheetHeader>
-                    <div className="mt-6">
-                      <Sidebar
-                        selectedCategories={selectedCategories}
-                        onCategoryChange={handleCategoryChange}
-                        priceRange={priceRange}
-                        onPriceRangeChange={handlePriceRangeChange}
-                        categories={categories}
-                      />
-                    </div>
-                  </SheetContent>
-                </Sheet>
-
-                <span className="text-slate-600">
-                  {filteredAndSortedProducts.length} products found
-                </span>
+      {/* Hero Section */}
+      <section className="relative bg-gradient-to-br from-emerald-50 to-slate-100 py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div className="space-y-8">
+              <div className="space-y-4">
+                <h1 className="text-5xl lg:text-6xl font-bold text-slate-800 leading-tight">
+                  Discover Your
+                  <span className="text-emerald-600 block">Perfect Style</span>
+                </h1>
+                <p className="text-xl text-slate-600 leading-relaxed">
+                  Shop premium quality products with unbeatable prices. From fashion to electronics, 
+                  we have everything you need to elevate your lifestyle.
+                </p>
               </div>
-
-              <Select value={sortBy} onValueChange={handleSortChange}>
-                <SelectTrigger className="w-48 border-slate-300">
-                  <SelectValue placeholder="Sort by" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="name">Name (A-Z)</SelectItem>
-                  <SelectItem value="price-low">Price (Low to High)</SelectItem>
-                  <SelectItem value="price-high">Price (High to Low)</SelectItem>
-                  <SelectItem value="rating">Rating</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            {/* Products Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-8">
-              {paginatedProducts.map(product => (
-                <ProductCard key={product.id} product={product} />
-              ))}
-            </div>
-
-            {/* Pagination */}
-            {totalPages > 1 && (
-              <Pagination
-                currentPage={currentPage}
-                totalPages={totalPages}
-                onPageChange={setCurrentPage}
-              />
-            )}
-
-            {/* No products found */}
-            {filteredAndSortedProducts.length === 0 && (
-              <div className="text-center py-12">
-                <div className="text-slate-400 text-6xl mb-4">🔍</div>
-                <h3 className="text-xl font-semibold text-slate-700 mb-2">No products found</h3>
-                <p className="text-slate-500">Try adjusting your filters to see more results.</p>
+              
+              <div className="flex flex-col sm:flex-row gap-4">
+                <Link to="/products">
+                  <Button size="lg" className="bg-emerald-600 hover:bg-emerald-700 text-white px-8 py-4 text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-200">
+                    Shop Now
+                    <ArrowRight className="ml-2 h-5 w-5" />
+                  </Button>
+                </Link>
+                <Button variant="outline" size="lg" className="border-slate-300 text-slate-700 hover:bg-slate-50 px-8 py-4 text-lg font-semibold">
+                  Learn More
+                </Button>
               </div>
-            )}
+              
+              <div className="flex items-center space-x-8 pt-4">
+                <div className="text-center">
+                  <div className="text-3xl font-bold text-slate-800">50K+</div>
+                  <div className="text-sm text-slate-600">Happy Customers</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-3xl font-bold text-slate-800">10K+</div>
+                  <div className="text-sm text-slate-600">Products</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-3xl font-bold text-slate-800">4.9</div>
+                  <div className="flex items-center justify-center">
+                    {Array.from({ length: 5 }, (_, i) => (
+                      <Star key={i} className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div className="relative">
+              <div className="aspect-square bg-gradient-to-br from-emerald-100 to-slate-200 rounded-3xl p-8 shadow-2xl">
+                <img
+                  src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
+                  alt="Shopping Experience"
+                  className="w-full h-full object-cover rounded-2xl"
+                />
+              </div>
+              {/* Floating cards */}
+              <div className="absolute -top-4 -left-4 bg-white rounded-xl shadow-lg p-4 border border-slate-200">
+                <div className="flex items-center space-x-2">
+                  <div className="w-3 h-3 bg-emerald-500 rounded-full"></div>
+                  <span className="text-sm font-medium text-slate-700">Free Shipping</span>
+                </div>
+              </div>
+              <div className="absolute -bottom-4 -right-4 bg-white rounded-xl shadow-lg p-4 border border-slate-200">
+                <div className="flex items-center space-x-2">
+                  <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
+                  <span className="text-sm font-medium text-slate-700">24/7 Support</span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
+      </section>
+
+      {/* Features Section */}
+      <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-slate-800 mb-4">Why Choose ShopEase?</h2>
+            <p className="text-xl text-slate-600 max-w-2xl mx-auto">
+              We're committed to providing you with the best shopping experience possible
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <Card className="border-slate-200 shadow-sm hover:shadow-lg transition-shadow duration-300">
+              <CardHeader className="text-center pb-4">
+                <div className="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Truck className="h-8 w-8 text-emerald-600" />
+                </div>
+                <CardTitle className="text-lg font-semibold text-slate-800">Free Shipping</CardTitle>
+              </CardHeader>
+              <CardContent className="text-center">
+                <p className="text-slate-600">Free shipping on all orders over $50. Fast and reliable delivery.</p>
+              </CardContent>
+            </Card>
+
+            <Card className="border-slate-200 shadow-sm hover:shadow-lg transition-shadow duration-300">
+              <CardHeader className="text-center pb-4">
+                <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Shield className="h-8 w-8 text-blue-600" />
+                </div>
+                <CardTitle className="text-lg font-semibold text-slate-800">Secure Payment</CardTitle>
+              </CardHeader>
+              <CardContent className="text-center">
+                <p className="text-slate-600">Your payment information is always secure with our encryption.</p>
+              </CardContent>
+            </Card>
+
+            <Card className="border-slate-200 shadow-sm hover:shadow-lg transition-shadow duration-300">
+              <CardHeader className="text-center pb-4">
+                <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Headphones className="h-8 w-8 text-purple-600" />
+                </div>
+                <CardTitle className="text-lg font-semibold text-slate-800">24/7 Support</CardTitle>
+              </CardHeader>
+              <CardContent className="text-center">
+                <p className="text-slate-600">Our customer service team is here to help you anytime.</p>
+              </CardContent>
+            </Card>
+
+            <Card className="border-slate-200 shadow-sm hover:shadow-lg transition-shadow duration-300">
+              <CardHeader className="text-center pb-4">
+                <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <ShoppingBag className="h-8 w-8 text-orange-600" />
+                </div>
+                <CardTitle className="text-lg font-semibold text-slate-800">Easy Returns</CardTitle>
+              </CardHeader>
+              <CardContent className="text-center">
+                <p className="text-slate-600">30-day hassle-free returns on all purchases.</p>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* Featured Products Section */}
+      <section className="py-20 bg-slate-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-slate-800 mb-4">Featured Products</h2>
+            <p className="text-xl text-slate-600 max-w-2xl mx-auto">
+              Discover our most popular items, carefully selected just for you
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+            {featuredProducts.map(product => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </div>
+          
+          <div className="text-center">
+            <Link to="/products">
+              <Button size="lg" className="bg-emerald-600 hover:bg-emerald-700 text-white px-8 py-3 font-semibold shadow-lg hover:shadow-xl transition-all duration-200">
+                View All Products
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-20 bg-emerald-600">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-4xl font-bold text-white mb-4">Ready to Start Shopping?</h2>
+          <p className="text-xl text-emerald-100 mb-8 max-w-2xl mx-auto">
+            Join thousands of satisfied customers and discover amazing products at unbeatable prices.
+          </p>
+          <Link to="/products">
+            <Button size="lg" variant="outline" className="bg-white text-emerald-600 border-white hover:bg-emerald-50 px-8 py-3 font-semibold shadow-lg hover:shadow-xl transition-all duration-200">
+              Start Shopping Now
+            </Button>
+          </Link>
+        </div>
+      </section>
     </div>
   );
 };

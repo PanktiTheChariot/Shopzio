@@ -27,7 +27,7 @@ const Navigation = () => {
             <Link to="/" className="text-slate-600 hover:text-emerald-600 transition-colors font-medium">
               Home
             </Link>
-            <Link to="/" className="text-slate-600 hover:text-emerald-600 transition-colors font-medium">
+            <Link to="/products" className="text-slate-600 hover:text-emerald-600 transition-colors font-medium">
               Products
             </Link>
             <Button variant="ghost" size="sm" className="text-slate-600 hover:text-emerald-600">
@@ -71,7 +71,7 @@ const Navigation = () => {
                 Home
               </Link>
               <Link
-                to="/"
+                to="/products"
                 className="block px-3 py-2 text-slate-600 hover:text-emerald-600 hover:bg-slate-50 rounded-md transition-colors"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
