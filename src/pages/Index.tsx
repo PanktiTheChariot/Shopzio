@@ -1,4 +1,3 @@
-
 import { Link } from "react-router-dom";
 import Navigation from "../components/Navigation";
 import { Button } from "@/components/ui/button";
@@ -8,16 +7,25 @@ import { products } from "../data/products";
 import ProductCard from "../components/ProductCard";
 
 const Index = () => {
-  // Get featured products (first 4 products)
   const featuredProducts = products.slice(0, 4);
 
   return (
     <div className="min-h-screen bg-slate-50">
       <Navigation />
       
-      {/* Hero Section */}
       <section className="relative bg-gradient-to-br from-emerald-50 to-slate-100 py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-2">
+          <div className="w-3 h-3 bg-emerald-500 rounded-full"></div>
+                  <span className="text-sm font-medium text-slate-700">Free Shipping</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
+                  <span className="text-sm font-medium text-slate-700">24/7 Support</span>
+                </div>
+          </div>
+                
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div className="space-y-8">
               <div className="space-y-4">
@@ -38,9 +46,11 @@ const Index = () => {
                     <ArrowRight className="ml-2 h-5 w-5" />
                   </Button>
                 </Link>
-                <Button variant="outline" size="lg" className="border-slate-300 text-slate-700 hover:bg-slate-50 px-8 py-4 text-lg font-semibold">
-                  Learn More
-                </Button>
+                <Link to="/learn-more">
+                  <Button variant="outline" size="lg" className="border-slate-300 text-slate-700 hover:bg-slate-50 px-8 py-4 text-lg font-semibold">
+                    Learn More
+                  </Button>
+                </Link>
               </div>
               
               <div className="flex items-center space-x-8 pt-4">
@@ -71,29 +81,15 @@ const Index = () => {
                   className="w-full h-full object-cover rounded-2xl"
                 />
               </div>
-              {/* Floating cards */}
-              <div className="absolute -top-4 -left-4 bg-white rounded-xl shadow-lg p-4 border border-slate-200">
-                <div className="flex items-center space-x-2">
-                  <div className="w-3 h-3 bg-emerald-500 rounded-full"></div>
-                  <span className="text-sm font-medium text-slate-700">Free Shipping</span>
-                </div>
-              </div>
-              <div className="absolute -bottom-4 -right-4 bg-white rounded-xl shadow-lg p-4 border border-slate-200">
-                <div className="flex items-center space-x-2">
-                  <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
-                  <span className="text-sm font-medium text-slate-700">24/7 Support</span>
-                </div>
-              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Features Section */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-slate-800 mb-4">Why Choose ShopEase?</h2>
+            <h2 className="text-4xl font-bold text-slate-800 mb-4">Why Choose Shopzio?</h2>
             <p className="text-xl text-slate-600 max-w-2xl mx-auto">
               We're committed to providing you with the best shopping experience possible
             </p>
@@ -151,7 +147,6 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Featured Products Section */}
       <section className="py-20 bg-slate-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
@@ -178,7 +173,6 @@ const Index = () => {
         </div>
       </section>
 
-      {/* CTA Section */}
       <section className="py-20 bg-emerald-600">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-4xl font-bold text-white mb-4">Ready to Start Shopping?</h2>

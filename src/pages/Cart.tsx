@@ -66,7 +66,6 @@ const Cart = () => {
         </Link>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Cart Items */}
           <div className="lg:col-span-2 space-y-4">
             <div className="flex items-center justify-between">
               <h1 className="text-2xl font-bold text-slate-800">Shopping Cart</h1>
@@ -148,7 +147,6 @@ const Cart = () => {
             </div>
           </div>
 
-          {/* Order Summary */}
           <div className="lg:col-span-1">
             <Card className="border-slate-200 shadow-sm sticky top-24">
               <CardHeader>
